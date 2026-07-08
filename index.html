@@ -17,7 +17,7 @@
 
 <div class="max-w-5xl mx-auto flex justify-between items-center">
 
-<h1 class="text-xl font-black tracking-wide text-emerald-400">
+<h1 class="text-xl font-black tracking-wide text-blue-400">
 🎯 Checkout Coach Pro
 </h1>
 
@@ -25,8 +25,39 @@
 v0.1
 </span>
 
+
+<div class="grid grid-cols-3 gap-2 mb-6 mt-4">
+
+<div class="bg-slate-950 border border-slate-800 rounded-xl p-3">
+<span class="text-xs text-slate-400 font-bold">
+🎯 Correct
+</span>
+<div id="correctStat" class="text-xl font-black text-blue-400">
+0
+</div>
 </div>
 
+
+<div class="bg-slate-950 border border-slate-800 rounded-xl p-3">
+<span class="text-xs text-slate-400 font-bold">
+📈 Accuracy
+</span>
+<div id="accuracyStat" class="text-xl font-black text-blue-400">
+0%
+</div>
+</div>
+
+
+<div class="bg-slate-950 border border-slate-800 rounded-xl p-3">
+<span class="text-xs text-slate-400 font-bold">
+🔥 Streak
+</span>
+<div id="streakStat" class="text-xl font-black text-blue-400">
+0
+</div>
+</div>
+
+</div>
 </header>
 
 
@@ -35,64 +66,51 @@ v0.1
 
 <div class="w-full max-w-md">
 
-
-<!-- Stats -->
-
-<div class="grid grid-cols-4 gap-3 mb-5">
-
-
-<div class="bg-slate-900 rounded-2xl p-3 text-center border border-slate-800">
-<p class="text-xs text-slate-500">Accuracy</p>
-<p class="text-xl font-black text-emerald-400">
-0%
-</p>
-</div>
-
-
-<div class="bg-slate-900 rounded-2xl p-3 text-center border border-slate-800">
-<p class="text-xs text-slate-500">Correct</p>
-<p class="text-xl font-black">
-0
-</p>
-</div>
-
-
-<div class="bg-slate-900 rounded-2xl p-3 text-center border border-slate-800">
-<p class="text-xs text-slate-500">Streak</p>
-<p class="text-xl font-black text-orange-400">
-0
-</p>
-</div>
-
-
-<div class="bg-slate-900 rounded-2xl p-3 text-center border border-slate-800">
-<p class="text-xs text-slate-500">Best</p>
-<p class="text-xl font-black">
-0
-</p>
-</div>
-
-
-</div>
-
-
-
 <!-- Main Card -->
 
 <div class="bg-slate-900 rounded-3xl border border-slate-800 p-8 shadow-2xl text-center">
 
 
 <p class="uppercase tracking-widest text-xs text-slate-500 font-bold">
+<div class="grid grid-cols-3 gap-2 mb-6">
+
+<button onclick="setDifficulty('beginner')"
+id="beginnerBtn"
+class="bg-blue-500 text-white rounded-xl py-3 font-bold">
+
+Beginner
+
+</button>
+
+
+<button onclick="setDifficulty('intermediate')"
+id="intermediateBtn"
+class="bg-slate-800 text-white rounded-xl py-3 font-bold">
+
+Intermediate
+
+</button>
+
+
+<button onclick="setDifficulty('expert')"
+id="expertBtn"
+class="bg-slate-800 text-white rounded-xl py-3 font-bold">
+
+Expert
+
+</button>
+
+</div>
 Finish
 </p>
 
 
-<h2 class="text-7xl font-black mt-3 mb-2">
-121
+<h2 id="checkoutNumber">
+170
 </h2>
 
 
-<p class="text-emerald-400 text-sm font-bold">
+<p class="text-blue-400 text-sm font-bold">
 🎯 Three Dart Finish
 </p>
 
@@ -101,11 +119,9 @@ Finish
 
 
 <input
-
-class="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-center font-bold outline-none focus:border-emerald-500"
-
+id="routeInput"
+class="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-center font-bold outline-none focus:border-blue-500"
 placeholder="Example: T20 T11 D14"
-
 />
 
 
@@ -114,26 +130,39 @@ placeholder="Example: T20 T11 D14"
 
 
 <button
-
-class="mt-4 w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl py-4 transition">
+onclick="checkRoute()"
+class="mt-4 w-full bg-blue-500 hover:bg-blue-400 text-slate-950 font-black rounded-xl py-4 transition">
 
 CHECK
 
 </button>
 
 
+<div 
+id="feedbackBox"
+class="hidden mt-4 rounded-xl p-4 font-bold text-sm border">
+</div>
+<button
+
+onclick="newCheckout()"
+
+class="mt-3 w-full bg-slate-800 hover:bg-slate-700 rounded-xl py-3 font-bold transition">
+
+🔄 Next Checkout
+
+</button>
 
 <div class="grid grid-cols-2 gap-3 mt-4">
 
 
-<button class="bg-slate-800 rounded-xl py-3 font-bold">
+<button id="hintButton" class="bg-slate-800 rounded-xl py-3 font-bold">
 
 💡 Hint
 
 </button>
 
 
-<button class="bg-slate-800 rounded-xl py-3 font-bold">
+<button id="showAnswerButton" class="bg-slate-800 rounded-xl py-3 font-bold">
 
 👁 Show Answer
 
@@ -158,6 +187,607 @@ Checkout Coach Pro © 2026
 
 </footer>
 
+<script>
+const checkoutRoutes = {
 
+2:["D1"],
+3:["S1 D1"],
+4:["D2"],
+5:["S1 D2"],
+6:["D3"],
+7:["S3 D2"],
+8:["D4"],
+9:["S1 D4"],
+10:["D5"],
+11:["S3 D4"],
+12:["D6"],
+13:["S5 D4"],
+14:["D7"],
+15:["S7 D4"],
+16:["D8"],
+17:["S9 D4"],
+18:["D9"],
+19:["S11 D4"],
+20:["D10"],
+
+21:["S13 D4"],
+22:["S14 D4"],
+24:["D12"],
+25:["S9 D8"],
+26:["S10 D8"],
+27:["S11 D8"],
+28:["D14"],
+30:["D15"],
+32:["D16"],
+34:["D17"],
+36:["D18"],
+38:["D19"],
+40:["D20"],
+
+
+41:[
+"T9 D2",
+"S1 D20"
+],
+
+42:[
+"T14 D0",
+"S10 D16"
+],
+
+45:[
+"T15 D0",
+"S13 D16"
+],
+
+48:[
+"T16 D0",
+"S8 D20"
+],
+
+50:[
+"BULL",
+"S10 D20"
+],
+
+
+51:[
+"T17 D0",
+"S11 D20"
+],
+
+52:[
+"T20 D6",
+"S12 D20"
+],
+
+54:[
+"T18 D0",
+"S14 D20"
+],
+
+56:[
+"T16 D4",
+"S16 D20"
+],
+
+57:[
+"T19 D0",
+"S17 D20"
+],
+
+58:[
+"T18 D2",
+"S18 D20"
+],
+
+60:[
+"T20 D10"
+],
+
+
+61:[
+"T15 D8",
+"T11 D14"
+],
+
+62:[
+"T12 D13",
+"T20 D1"
+],
+
+64:[
+"T16 D8"
+],
+
+65:[
+"T15 D10"
+],
+
+66:[
+"T10 D18"
+],
+
+68:[
+"T20 D4"
+],
+
+70:[
+"T18 D8"
+],
+
+72:[
+"T20 D6"
+],
+
+74:[
+"T14 D16"
+],
+
+76:[
+"T20 D8"
+],
+
+78:[
+"T18 D12"
+],
+
+80:[
+"T20 D10",
+"T16 D16"
+],
+
+81:[
+"T19 D12",
+"T15 D18"
+],
+
+82:[
+"T14 D20"
+],
+
+84:[
+"T20 D12"
+],
+
+85:[
+"T15 D20"
+],
+
+86:[
+"T18 D16"
+],
+
+87:[
+"T17 D18"
+],
+
+88:[
+"T20 D14"
+],
+
+89:[
+"T19 D16"
+],
+
+90:[
+"T20 D15",
+"T18 D18"
+],
+
+91:[
+"T17 D20"
+],
+
+92:[
+"T20 D16"
+],
+
+93:[
+"T19 D18"
+],
+
+94:[
+"T18 D20"
+],
+
+95:[
+"T19 D19"
+],
+
+96:[
+"T20 D18"
+],
+
+97:[
+"T19 D20"
+],
+
+98:[
+"T20 D19"
+],
+
+99:[
+"T19 T10 D10"
+],
+
+100:[
+"T20 D20"
+],
+
+
+101:[
+"T20 T9 D16"
+],
+
+110:[
+"T20 T18 D16"
+],
+
+120:[
+"T20 T20 D20"
+],
+
+121:[
+"T20 T11 D14",
+"T20 T15 D8"
+],
+
+122:[
+"T18 T18 D16"
+],
+
+123:[
+"T19 T16 D9"
+],
+
+124:[
+"T20 T16 D8"
+],
+
+125:[
+"T20 T15 D10"
+],
+
+126:[
+"T19 T19 D6"
+],
+
+127:[
+"T20 T17 D8"
+],
+
+128:[
+"T18 T18 D10"
+],
+
+129:[
+"T19 T16 D12"
+],
+
+130:[
+"T20 T20 D5"
+],
+
+132:[
+"T20 T16 D12"
+],
+
+135:[
+"T20 T15 BULL"
+],
+
+136:[
+"T20 T20 D8"
+],
+
+140:[
+"T20 T20 D10"
+],
+
+144:[
+"T20 T20 D12"
+],
+
+150:[
+"T20 T18 D18"
+],
+
+160:[
+"T20 T20 D20"
+],
+
+161:[
+"T20 T17 BULL"
+],
+
+164:[
+"T20 T18 BULL"
+],
+
+167:[
+"T20 T19 BULL"
+],
+
+170:[
+"T20 T20 BULL"
+
+]
+
+};
+const checkoutLevels = {
+
+beginner: [
+32,36,40,44,48,50,52,56,60
+],
+
+intermediate: [
+61,62,64,65,68,70,72,74,76,
+78,80,81,82,84,85,88,90,92,
+95,96,98,100
+],
+
+expert: [
+101,104,105,108,110,111,
+112,114,115,116,117,
+120,121,122,123,
+124,126,127,128,
+130,132,135,136,
+138,140,141,144,
+145,147,148,150,
+151,152,153,154,
+156,158,160,161,
+164,167,170
+]
+
+};
+
+
+let currentDifficulty = "beginner";
+
+let totalAttempts = 0;
+let correctAttempts = 0;
+let currentStreak = 0;
+
+function saveStats(){
+
+    localStorage.setItem(
+        "dartsStats",
+        JSON.stringify({
+            totalAttempts,
+            correctAttempts,
+            currentStreak
+        })
+    );
+
+}
+function loadStats(){
+
+    let saved = localStorage.getItem("dartsStats");
+
+    if(saved){
+
+        let stats = JSON.parse(saved);
+
+        totalAttempts = stats.totalAttempts || 0;
+        correctAttempts = stats.correctAttempts || 0;
+        currentStreak = stats.currentStreak || 0;
+
+    }
+
+    updateStats();
+
+}
+
+function newCheckout(){
+
+let list = checkoutLevels[currentDifficulty];
+
+let randomNumber =
+list[Math.floor(Math.random()*list.length)];
+
+
+document.getElementById("checkoutNumber").innerHTML =
+randomNumber;
+
+}
+function setDifficulty(level){
+
+  currentDifficulty = level;
+
+  document.querySelectorAll("button").forEach(btn=>{
+    btn.classList.remove("bg-blue-500");
+    btn.classList.add("bg-slate-800");
+  });
+
+  let active = document.getElementById(level+"Btn");
+
+  active.classList.remove("bg-slate-800");
+  active.classList.add("bg-blue-500");
+
+  newCheckout();
+
+}  
+function normalizeRoute(route){
+
+return route
+.toUpperCase()
+.replace(/DOUBLE/g,"D")
+.replace(/TRIPLE/g,"T")
+.replace(/SINGLE/g,"S")
+.replace(/BULLSEYE/g,"BULL")
+.replace(/,/g," ")
+.replace(/\s+/g," ")
+.trim();
+
+}
+function showFeedback(message, type){
+
+let box = document.getElementById("feedbackBox");
+
+box.classList.remove(
+"hidden",
+"border-blue-500",
+"border-red-500",
+"text-blue-400",
+"text-red-400"
+);
+
+
+box.innerHTML = message;
+
+
+if(type === "success"){
+
+box.classList.add(
+"border-blue-500",
+"text-blue-400"
+);
+
+}
+
+else{
+
+box.classList.add(
+"border-red-500",
+"text-red-400"
+);
+
+}
+
+}
+function checkRoute(){
+
+let input = document
+.getElementById("routeInput")
+.value
+.toUpperCase();
+
+input = normalizeRoute(input);
+
+
+let target = Number(
+document.getElementById("checkoutNumber").innerHTML
+);
+
+
+let possibleRoutes = checkoutRoutes[target];
+
+
+if(!possibleRoutes){
+
+alert("No checkout data available for " + target);
+
+return;
+
+}
+
+
+if(
+possibleRoutes.some(route => normalizeRoute(route) === input)
+){
+    totalAttempts++;
+    correctAttempts++;
+    currentStreak++;
+
+    updateStats();
+
+    showFeedback(
+    "🎯 PERFECT CHECKOUT!<br><br>"
+    +
+    target +
+    "<br><br>"
+    +
+    input,
+    "success"
+    );
+
+}
+
+else{
+
+    totalAttempts++;
+    currentStreak = 0;
+
+    updateStats();
+
+    showFeedback(
+    "❌ Probeer opnieuw<br><br>"
+    +
+    "Jouw poging:<br>"
+    +
+    input
+    +
+    "<br><br>⭐ Aanbevolen:<br>"
+    +
+    possibleRoutes[0],
+    "error"
+    );
+
+}
+function updateStats(){
+
+    let accuracy = totalAttempts === 0
+    ? 0
+    : Math.round((correctAttempts / totalAttempts) * 100);
+
+    document.getElementById("correctStat").textContent = correctAttempts;
+    document.getElementById("accuracyStat").textContent = accuracy + "%";
+    document.getElementById("streakStat").textContent = currentStreak;
+
+}
+
+}
+function showHint(){
+
+    let target = Number(
+        document.getElementById("checkoutNumber").innerHTML
+    );
+
+    let routes = checkoutRoutes[target];
+
+    if(routes){
+        showFeedback(
+            "💡 Hint:<br><br>" + routes[0],
+            "info"
+        );
+    }
+
+}
+
+
+function showAnswer(){
+
+    let target = Number(
+        document.getElementById("checkoutNumber").innerHTML
+    );
+
+    let routes = checkoutRoutes[target];
+
+    if(routes){
+        showFeedback(
+            "⭐ Answer:<br><br>" + routes[0],
+            "success"
+        );
+    }
+
+}
+window.addEventListener("DOMContentLoaded", () => {
+
+    loadStats();
+
+    generateTrainingCheckout();
+
+    document
+    .getElementById("hintButton")
+    .addEventListener("click", showHint);
+
+    document
+    .getElementById("showAnswerButton")
+    .addEventListener("click", showAnswer);
+
+});
+
+</script>
 </body>
 </html>
