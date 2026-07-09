@@ -981,6 +981,73 @@ function showAnswer(){
     }
 
 }
+function showHint(){
+
+    let target = Number(
+        document.getElementById("checkoutNumber").innerHTML
+    );
+
+    let routes = checkoutRoutes[target];
+
+    if(!routes){
+        return;
+    }
+
+
+    let hintText = "";
+
+
+    if(target <= 40){
+
+        hintText =
+        "💡 Hint:<br><br>" +
+        "Probeer direct op een dubbel uit te komen.";
+
+    }
+
+    else if(target <= 100){
+
+        hintText =
+        "💡 Hint:<br><br>" +
+        "Probeer eerst een triple te gooien en eindig op een dubbel.";
+
+    }
+
+    else {
+
+        hintText =
+        "💡 Hint:<br><br>" +
+        "Denk in triples en zorg dat je een dubbel overhoudt.";
+
+    }
+
+
+    showFeedback(
+        hintText,
+        "info"
+    );
+
+}
+function showAnswer(){
+
+    let target = Number(
+        document.getElementById("checkoutNumber").innerHTML
+    );
+
+    let routes = checkoutRoutes[target];
+
+
+    if(routes){
+
+        showFeedback(
+            "⭐ Aanbevolen route(s):<br><br>" +
+            routes.join("<br>"),
+            "success"
+        );
+
+    }
+
+}
 window.addEventListener("DOMContentLoaded", () => {
 
     loadStats();
