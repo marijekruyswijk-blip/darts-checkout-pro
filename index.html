@@ -155,16 +155,6 @@ class="mt-3 w-full bg-slate-800 hover:bg-slate-700 rounded-xl py-3 font-bold tra
 <div class="grid grid-cols-2 gap-3 mt-4">
 
 
-<button id="hintButton" class="bg-slate-800 rounded-xl py-3 font-bold">
-💡 Hint
-</button>
-
-
-<button id="showAnswerButton" class="bg-slate-800 rounded-xl py-3 font-bold">
-👁 Show Answer
-</button>
-
-
 </div>
 
 
@@ -759,22 +749,7 @@ function updateStats(){
 }
 
 }
-function showHint(){
 
-    let target = Number(
-        document.getElementById("checkoutNumber").innerHTML
-    );
-
-    let routes = checkoutRoutes[target];
-
-    if(routes){
-        showFeedback(
-            "💡 Hint:<br><br>" + routes[0],
-            "info"
-        );
-    }
-
-}
 
 function parseDart(dart){
 
@@ -1050,16 +1025,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     generateTrainingCheckout();
 
-    document
-    .getElementById("hintButton")
-    .addEventListener("click", showHint);
-
-    document
-    .getElementById("showAnswerButton")
-    .addEventListener("click", showAnswer);
-
 });
-
 </script>
 </body>
 </html>
