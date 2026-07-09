@@ -746,15 +746,13 @@ if(result.valid){
 
     }else{
 
-       showFeedback(
-    "❌ Niet correct<br><br>" +
-    (result.reason ? result.reason + "<br><br>" : "") +
-    "Jouw route:<br>" +
-    input +
-    "<br><br>⭐ Aanbevolen route(s):<br>" +
-    possibleRoutes.join("<br>"),
-    "error"
-);
+        showFeedback(
+            "🎯 CHECKOUT!<br><br>" +
+            input +
+            "<br><br>⭐ Geldige checkout, maar een betere optie is:<br><br>" +
+            possibleRoutes.join("<br>"),
+            "warning"
+        );
 
     }
 
