@@ -619,15 +619,18 @@ function setDifficulty(level){
 }  
 function normalizeRoute(route){
 
-return route
-.toUpperCase()
-.replace(/DOUBLE/g,"D")
-.replace(/TRIPLE/g,"T")
-.replace(/SINGLE/g,"S")
-.replace(/BULLSEYE/g,"BULL")
-.replace(/,/g," ")
-.replace(/\s+/g," ")
-.trim();
+    return route
+    .toUpperCase()
+    .replace(/DOUBLE/g,"D")
+    .replace(/TRIPLE/g,"T")
+    .replace(/SINGLE/g,"S")
+    .replace(/BULLSEYE/g,"BULL")
+    .replace(/DBULL/g,"BULL")
+    .replace(/\bDB\b/g,"BULL")
+    .replace(/SBULL/g,"SB")
+    .replace(/,/g," ")
+    .replace(/\s+/g," ")
+    .trim();
 
 }
 function showFeedback(message, type){
@@ -692,45 +695,58 @@ return;
 }
 
 
-if(
-possibleRoutes.some(route => normalizeRoute(route) === input)
-){
+let usedRecommendedRoute =
+    possibleRoutes.some(route => normalizeRoute(route) === normalizeRoute(input));
+
+let result = isValidCheckout(input, target);
+
+if(result.valid){
+
     totalAttempts++;
     correctAttempts++;
     currentStreak++;
 
     updateStats();
+    saveStats();
 
-    showFeedback(
-    "🎯 PERFECT CHECKOUT!<br><br>"
-    +
-    target +
-    "<br><br>"
-    +
-    input,
-    "success"
-    );
+    if(usedRecommendedRoute){
 
-}
+        showFeedback(
+            "🏆 PERFECT!<br><br>" +
+            "Je gebruikte de aanbevolen route.<br><br>" +
+            input,
+            "success"
+        );
 
-else{
+    }else{
+
+       showFeedback(
+    "❌ Niet correct<br><br>" +
+    (result.reason ? result.reason + "<br><br>" : "") +
+    "Jouw route:<br>" +
+    input +
+    "<br><br>⭐ Aanbevolen route(s):<br>" +
+    possibleRoutes.join("<br>"),
+    "error"
+);
+
+    }
+
+}else{
 
     totalAttempts++;
     currentStreak = 0;
 
     updateStats();
+    saveStats();
 
     showFeedback(
-    "❌ Probeer opnieuw<br><br>"
-    +
-    "Jouw poging:<br>"
-    +
-    input
-    +
-    "<br><br>⭐ Aanbevolen:<br>"
-    +
-    possibleRoutes[0],
-    "error"
+        "❌ Probeer opnieuw<br><br>" +
+        "Jouw poging:<br>" +
+        input +
+        "<br><br>⭐ Aanbevolen route:<br>" +
+        possibleRoutes[0],
+        "error"
     );
 
 }
@@ -764,6 +780,190 @@ function showHint(){
 
 }
 
+function parseDart(dart){
+
+    dart = dart.trim().toUpperCase();
+
+    // Bull
+    if(dart === "BULL" || dart === "DB" || dart === "DBULL" || dart === "50"){
+        return {
+            valid: true,
+            value: 50,
+            isDouble: true
+        };
+    }
+
+    // Single Bull
+    if(dart === "SB" || dart === "SBULL" || dart === "25"){
+        return {
+            valid: true,
+            value: 25,
+            isDouble: false
+        };
+    }
+
+    // Alleen nummer = Single
+    if(/^\d+$/.test(dart)){
+
+        let n = Number(dart);
+
+        if(n >= 1 && n <= 20){
+
+            return {
+                valid: true,
+                value: n,
+                isDouble: false
+            };
+
+        }
+
+        return {
+            valid: false
+        };
+
+    }
+
+    // Single
+    let match = dart.match(/^S(\d+)$/);
+
+    if(match){
+
+        let n = Number(match[1]);
+
+        if((n >= 1 && n <= 20) || n === 25){
+
+            return {
+                valid: true,
+                value: n,
+                isDouble: false
+            };
+
+        }
+
+        return {
+            valid: false
+        };
+
+    }
+
+    // Double
+    match = dart.match(/^D(\d+)$/);
+
+    if(match){
+
+        let n = Number(match[1]);
+
+        if((n >= 1 && n <= 20) || n === 25){
+
+            return {
+                valid: true,
+                value: n * 2,
+                isDouble: true
+            };
+
+        }
+
+        return {
+            valid: false
+        };
+
+    }
+
+    // Triple
+    match = dart.match(/^T(\d+)$/);
+
+    if(match){
+
+        let n = Number(match[1]);
+
+        if(n >= 1 && n <= 20){
+
+            return {
+                valid: true,
+                value: n * 3,
+                isDouble: false
+            };
+
+        }
+
+        return {
+            valid: false
+        };
+
+    }
+
+    return {
+        valid: false
+    };
+
+}
+
+function isDoubleFinish(dart){
+
+    dart = dart.trim().toUpperCase();
+
+    return /^D([1-9]|1\d|20|25)$/.test(dart)
+        || dart === "BULL";
+
+}
+
+function isValidCheckout(input, target){
+
+    let darts = input
+        .trim()
+        .toUpperCase()
+        .split(/\s+/);
+
+    if(darts.length === 0){
+        return {
+            valid: false,
+            reason: "Voer een checkout in."
+        };
+    }
+
+    if(darts.length > 3){
+        return {
+            valid: false,
+            reason: "Een checkout bestaat uit maximaal 3 darts."
+        };
+    }
+
+    let total = 0;
+
+    for(let i = 0; i < darts.length; i++){
+
+        let dart = parseDart(darts[i]);
+
+        if(!dart.valid){
+            return {
+                valid: false,
+                reason: `"${darts[i]}" bestaat niet op een dartbord.`
+            };
+        }
+
+        total += dart.value;
+
+        if(i === darts.length - 1 && !dart.isDouble){
+            return {
+                valid: false,
+                reason: "Een checkout moet eindigen op een dubbel of bull."
+            };
+        }
+
+    }
+
+    if(total !== target){
+        return {
+            valid: false,
+            reason: ""
+        };
+    }
+
+    return {
+        valid: true
+    };
+
+}
 
 function showAnswer(){
 
