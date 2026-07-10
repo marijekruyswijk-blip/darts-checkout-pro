@@ -22,7 +22,7 @@
 </h1>
 
 <span class="text-xs text-slate-500">
-v1.0.0
+v1.0.1
 </span>
 
 
@@ -210,12 +210,12 @@ const checkoutRoutes = {
 
 61:[
 "T15 D8",
-"S11 BULL",
+"S11 BE",
 "T11 D14"
 ],
 
 62:[
-"S12 BULL",
+"S12 BE",
 "T10 D16"
 ],
 
@@ -285,7 +285,7 @@ const checkoutRoutes = {
 
 82:[
 "T14 D20",
-"BULL D16"
+"BE D16"
 ],
 
 83:["T17 D16"],
@@ -432,7 +432,7 @@ const checkoutRoutes = {
 ],
 
 125:[
-"BULL T17 D12"
+"BE T17 D12"
 ],
 
 126:[
@@ -465,7 +465,9 @@ const checkoutRoutes = {
 
 134:["T19 T19 D10"],
 
-135:["SB T20 BULL"],
+135:[
+"SB T20 BE"
+],
 
 136:[
 "T20 T20 D8"
@@ -526,20 +528,19 @@ const checkoutRoutes = {
 ],
 
 161:[
-"T20 T17 BULL"
+"T20 T17 BE"
 ],
 
 164:[
-"T19 T19 BULL"
+"T19 T19 BE"
 ],
 
 167:[
-"T20 T19 BULL"
+"T20 T19 BE"
 ],
 
 170:[
-"T20 T20 BULL"
-
+"T20 T20 BE"
 ]
 
 };
@@ -650,10 +651,13 @@ function normalizeRoute(route){
     .replace(/DOUBLE/g,"D")
     .replace(/TRIPLE/g,"T")
     .replace(/SINGLE/g,"S")
-    .replace(/BULLSEYE/g,"BULL")
-    .replace(/DBULL/g,"BULL")
-    .replace(/\bDB\b/g,"BULL")
+    .replace(/BULLSEYE/g,"BE")
+    .replace(/DBULL/g,"BE")
+    .replace(/\bDB\b/g,"BE")
+    .replace(/\bBULL\b/g,"BE")
+    .replace(/\b50\b/g,"BE")
     .replace(/SBULL/g,"SB")
+    .replace(/\b25\b/g,"SB")
     .replace(/,/g," ")
     .replace(/\s+/g," ")
     .trim();
