@@ -698,7 +698,7 @@ function setDifficulty(level){
 }  
 function normalizeRoute(route){
 
-    return route
+    route = route
     .toUpperCase()
     .replace(/BULLSEYE/g,"BE")
     .replace(/DBULL/g,"BE")
@@ -711,6 +711,21 @@ function normalizeRoute(route){
     .replace(/,/g," ")
     .replace(/\s+/g," ")
     .trim();
+
+
+    // losse getallen omzetten naar singles
+    route = route
+    .split(" ")
+    .map(part => {
+        if(/^\d+$/.test(part)){
+            return "S" + part;
+        }
+        return part;
+    })
+    .join(" ");
+
+
+    return route;
 
 }
 function showFeedback(message, type){
