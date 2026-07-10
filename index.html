@@ -13,51 +13,59 @@
 <body class="bg-slate-950 text-white min-h-screen flex flex-col">
 
 
-<header class="bg-slate-900 border-b border-slate-800 p-5">
+<header class="w-full border-b border-slate-800 bg-slate-900/50">
 
-<div class="max-w-5xl mx-auto flex justify-between items-center">
+    <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
 
-<h1 class="text-xl font-black tracking-wide text-blue-400">
-🎯 Checkout Coach Pro
-</h1>
+        <!-- Logo -->
+        <div>
+            <h1 class="text-3xl font-black text-blue-400">
+                🎯 Checkout<br>
+                Coach Pro
+            </h1>
 
-<span class="text-xs text-slate-500">
-v1.1.1
-</span>
-
-
-<div class="grid grid-cols-3 gap-2 mb-6 mt-4">
-
-<div class="bg-slate-950 border border-slate-800 rounded-xl p-3">
-<span class="text-xs text-slate-400 font-bold">
-🎯 Correct
-</span>
-<div id="correctStat" class="text-xl font-black text-blue-400">
-0
-</div>
-</div>
+            <span class="text-xs text-slate-500">
+                v1.1.1
+            </span>
+        </div>
 
 
-<div class="bg-slate-950 border border-slate-800 rounded-xl p-3">
-<span class="text-xs text-slate-400 font-bold">
-📈 Accuracy
-</span>
-<div id="accuracyStat" class="text-xl font-black text-blue-400">
-0%
-</div>
-</div>
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-3">
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 min-w-[130px]">
+                <span class="text-xs text-slate-400 font-bold">
+                    🎯 Correct
+                </span>
+                <div id="correctStat" class="text-2xl font-black text-blue-400">
+                    0
+                </div>
+            </div>
 
 
-<div class="bg-slate-950 border border-slate-800 rounded-xl p-3">
-<span class="text-xs text-slate-400 font-bold">
-🔥 Streak
-</span>
-<div id="streakStat" class="text-xl font-black text-blue-400">
-0
-</div>
-</div>
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 min-w-[130px]">
+                <span class="text-xs text-slate-400 font-bold">
+                    📈 Accuracy
+                </span>
+                <div id="accuracyStat" class="text-2xl font-black text-blue-400">
+                    0%
+                </div>
+            </div>
 
-</div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 min-w-[130px]">
+                <span class="text-xs text-slate-400 font-bold">
+                    🔥 Streak
+                </span>
+                <div id="streakStat" class="text-2xl font-black text-blue-400">
+                    0
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
 </header>
 
 
