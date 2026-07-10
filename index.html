@@ -22,7 +22,7 @@
 </h1>
 
 <span class="text-xs text-slate-500">
-v1.0.1
+v1.1.1
 </span>
 
 
@@ -576,6 +576,8 @@ let currentDifficulty = "beginner";
 let totalAttempts = 0;
 let correctAttempts = 0;
 let currentStreak = 0;
+let checkoutCompleted = true;
+
 
 function saveStats(){
 
@@ -607,26 +609,68 @@ function loadStats(){
 
 }
 
+
 function newCheckout(){
+function newCheckout(){
+
+    console.log("newCheckout gestart");
+
+    if(!checkoutCompleted){
+
+        totalAttempts++;
+        currentStreak = 0;
+
+        updateStats();
+        saveStats();
+    }
+
+    checkoutCompleted = false;
+
+    document.getElementById("routeInput").value = "";
+    document.getElementById("routeInput").focus();
+
+    console.log("2. stats klaar");
+    console.log("3. input gewist");
+
 
     let list = checkoutLevels[currentDifficulty];
 
+    console.log("4. lijst:", list);
+
     let randomNumber =
-        list[Math.floor(Math.random()*list.length)];
+        list[Math.floor(Math.random() * list.length)];
 
-
-    let possibleRoutes = checkoutRoutes[randomNumber];
-
-    if(!possibleRoutes){
-        newCheckout();
-        return;
-    }
+    console.log("5. gekozen:", randomNumber);
 
 
     document.getElementById("checkoutNumber").innerHTML =
         randomNumber;
 
+    console.log("6. checkout gezet");
+
 }
+
+    checkoutCompleted = false;
+
+    document.getElementById("routeInput").value = "";
+    document.getElementById("routeInput").focus();
+
+    checkoutCompleted = false;
+
+    document.getElementById("routeInput").value = "";
+    document.getElementById("routeInput").focus();
+
+    let list = checkoutLevels[currentDifficulty];
+
+    let randomNumber =
+        list[Math.floor(Math.random() * list.length)];
+
+    console.log("Gekozen:", randomNumber);
+
+    document.getElementById("checkoutNumber").innerHTML =
+        randomNumber;
+}
+
 function setDifficulty(level){
 
   currentDifficulty = level;
@@ -729,11 +773,10 @@ let usedRecommendedRoute =
 let result = isValidCheckout(input, target);
 
 if(result.valid){
-
+    checkoutCompleted = true;
     totalAttempts++;
     correctAttempts++;
     currentStreak++;
-
     updateStats();
     saveStats();
 
