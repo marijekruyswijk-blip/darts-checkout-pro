@@ -648,9 +648,6 @@ function normalizeRoute(route){
 
     return route
     .toUpperCase()
-    .replace(/DOUBLE/g,"D")
-    .replace(/TRIPLE/g,"T")
-    .replace(/SINGLE/g,"S")
     .replace(/BULLSEYE/g,"BE")
     .replace(/DBULL/g,"BE")
     .replace(/\bDB\b/g,"BE")
@@ -661,7 +658,6 @@ function normalizeRoute(route){
     .replace(/,/g," ")
     .replace(/\s+/g," ")
     .trim();
-    .replace(/\bBE\b/g,"BE")    
 
 }
 function showFeedback(message, type){
