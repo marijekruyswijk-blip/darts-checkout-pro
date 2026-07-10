@@ -661,6 +661,7 @@ function normalizeRoute(route){
     .replace(/,/g," ")
     .replace(/\s+/g," ")
     .trim();
+    .replace(/\bBE\b/g,"BE")    
 
 }
 function showFeedback(message, type){
@@ -797,14 +798,14 @@ function parseDart(dart){
 
     dart = dart.trim().toUpperCase();
 
-    // Bull
-    if(dart === "BULL" || dart === "DB" || dart === "DBULL" || dart === "50"){
-        return {
-            valid: true,
-            value: 50,
-            isDouble: true
-        };
-    }
+    // Bull (50)
+   if(dart === "BE" || dart === "50"){
+       return {
+           valid: true,
+           value: 50,
+           isDouble: true
+       };
+   }
 
     // Single Bull
     if(dart === "SB" || dart === "SBULL" || dart === "25"){
