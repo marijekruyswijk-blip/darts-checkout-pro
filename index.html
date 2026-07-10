@@ -714,7 +714,7 @@ document.getElementById("checkoutNumber").innerHTML
 );
 
 
-let possibleRoutes = checkoutRoutes[target];
+let possibleRoutes = checkoutRoutes[target].map(route => normalizeRoute(route));
 
 
 if(!possibleRoutes){
@@ -798,15 +798,8 @@ function parseDart(dart){
 
     dart = dart.trim().toUpperCase();
 
-    // Bullseye (50)
-    if(
-        dart === "BE" ||
-        dart === "BULL" ||
-        dart === "BULLSEYE" ||
-        dart === "DB" ||
-        dart === "DBULL" ||
-        dart === "50"
-    ){
+    // Bull (50)
+    if(dart === "BE" || dart === "50"){
         return {
             valid: true,
             value: 50,
@@ -814,13 +807,8 @@ function parseDart(dart){
         };
     }
 
-
-    // Single Bull (25)
-    if(
-        dart === "SB" ||
-        dart === "SBULL" ||
-        dart === "25"
-    ){
+    // Single Bull
+    if(dart === "SB" || dart === "SBULL" || dart === "25"){
         return {
             valid: true,
             value: 25,
@@ -828,8 +816,25 @@ function parseDart(dart){
         };
     }
 
+    // Alleen nummer = Single
+    if(/^\d+$/.test(dart)){
 
-    // Single (S1-S20)
+        let n = Number(dart);
+
+        if(n >= 1 && n <= 20){
+            return {
+                valid: true,
+                value: n,
+                isDouble: false
+            };
+        }
+
+        return {
+            valid: false
+        };
+    }
+
+    // Single
     let match = dart.match(/^S(\d+)$/);
 
     if(match){
@@ -837,20 +842,19 @@ function parseDart(dart){
         let n = Number(match[1]);
 
         if(n >= 1 && n <= 20){
-
             return {
                 valid: true,
                 value: n,
                 isDouble: false
             };
-
         }
 
-        return { valid:false };
+        return {
+            valid:false
+        };
     }
 
-
-    // Double (D1-D20)
+    // Double
     match = dart.match(/^D(\d+)$/);
 
     if(match){
@@ -858,20 +862,19 @@ function parseDart(dart){
         let n = Number(match[1]);
 
         if(n >= 1 && n <= 20){
-
             return {
-                valid: true,
-                value: n * 2,
-                isDouble: true
+                valid:true,
+                value:n * 2,
+                isDouble:true
             };
-
         }
 
-        return { valid:false };
+        return {
+            valid:false
+        };
     }
 
-
-    // Triple (T1-T20)
+    // Triple
     match = dart.match(/^T(\d+)$/);
 
     if(match){
@@ -879,35 +882,17 @@ function parseDart(dart){
         let n = Number(match[1]);
 
         if(n >= 1 && n <= 20){
-
             return {
-                valid: true,
-                value: n * 3,
-                isDouble: false
-            };
-
-        }
-
-        return { valid:false };
-    }
-
-
-    // Alleen nummer = single
-    if(/^\d+$/.test(dart)){
-
-        let n = Number(dart);
-
-        if(n >= 1 && n <= 20){
-
-            return {
-                valid: true,
-                value: n,
+                valid:true,
+                value:n * 3,
                 isDouble:false
             };
-
         }
-    }
 
+        return {
+            valid:false
+        };
+    }
 
     return {
         valid:false
