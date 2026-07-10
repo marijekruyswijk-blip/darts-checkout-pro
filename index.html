@@ -22,7 +22,7 @@
 </h1>
 
 <span class="text-xs text-slate-500">
-v0.1
+v1.0.0
 </span>
 
 
@@ -159,7 +159,7 @@ class="mt-3 w-full bg-slate-800 hover:bg-slate-700 rounded-xl py-3 font-bold tra
 
 <footer class="text-center text-xs text-slate-600 p-5">
 
-Checkout Coach Pro © 2026
+Checkout Coach Pro © MTK 2026
 
 </footer>
 
@@ -739,7 +739,7 @@ if(result.valid){
 
         showFeedback(
             "🏆 PERFECT!<br><br>" +
-            "Je gebruikte de aanbevolen route.<br><br>" +
+            "You used the recommended route.<br><br>" +
             input,
             "success"
         );
@@ -749,9 +749,9 @@ if(result.valid){
         showFeedback(
             "🎯 CHECKOUT!<br><br>" +
             input +
-            "<br><br>⭐ Geldige checkout, maar een betere optie is:<br><br>" +
+            "<br><br>✅ Valid checkout, but there is a better option:<br><br>" +
             possibleRoutes.join("<br>"),
-            "warning"
+            "success"
         );
 
     }
@@ -765,10 +765,10 @@ if(result.valid){
     saveStats();
 
     showFeedback(
-        "❌ Probeer opnieuw<br><br>" +
-        "Jouw poging:<br>" +
+        "❌ TRY AGAIN<br><br>" +
+        "Your attempt:<br>" +
         input +
-        "<br><br>⭐ Aanbevolen route:<br>" +
+        "<br><br>⭐ Recommended route:<br>" +
         possibleRoutes[0],
         "error"
     );
